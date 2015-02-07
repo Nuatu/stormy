@@ -16,12 +16,9 @@ import backtype.storm.utils.Utils;
 
 import java.util.Map;
 
+//********* ADDED 1-of-4 imported http://mvnrepository.com/artifact/com.lambdaworks/lettuce/
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisConnection;
-
-
-//********* TO DO 1-of-4 imported http://mvnrepository.com/artifact/com.lambdaworks/lettuce/
-
 
 // COPY AND PASE: following code into pom.xml file (located lesson1/stage1/pom.xml)
 //<dependency>
@@ -32,54 +29,54 @@ import com.lambdaworks.redis.RedisConnection;
 //
 //********* END 1-of-4
 
-/**
- * This is a basic example of a Storm topology.
- */
+//********* BEGIN stage2 exercise part 1-of-2 ***********
+//import the random sentence spout from spout/RandomSentenceSpout (remember the semicolon!)
+
+//********** END stage 2 exercise part 1-of-2 ***********
 
 /**
- * This is a basic example of a storm topology.
- *
- * This topology demonstrates how to add three exclamation marks '!!!'
- * to each word emitted
- *
- * This is an example for Udacity Real Time Analytics Course - ud381
- *
- */
+* This is a basic example of a Storm topology.
+*/
+
+/**
+* This is a basic example of a storm topology.
+*
+* This topology demonstrates how to add three exclamation marks '!!!'
+* to each word emitted
+*
+* This is an example for Udacity Real Time Analytics Course - ud381
+*
+*/
 public class ReporterExclamationTopology {
 
   /**
-   * A bolt that adds the exclamation marks '!!!' to word
-   */
+  * A bolt that adds the exclamation marks '!!!' to word
+  */
   public static class ExclamationBolt extends BaseRichBolt
   {
     // To output tuples from this bolt to the next stage bolts, if any
     OutputCollector _collector;
 
-    //********* TO DO 2-of-4
+    //********* ADDED 2-of-4
     // place holder to keep the connection to redis
-
     RedisConnection<String,String> redis;
-
     //********* END 2-of-4
 
     @Override
     public void prepare(
-        Map                     map,
-        TopologyContext         topologyContext,
-        OutputCollector         collector)
+    Map                     map,
+    TopologyContext         topologyContext,
+    OutputCollector         collector)
     {
       // save the output collector for emitting tuples
       _collector = collector;
 
-      //********* TO DO 3-of-4
+      //********* ADDED 3-of-4
       // instantiate a redis connection
-
-      RedisClient client = new RedisCLient("localhost",6379);
+      RedisClient client = new RedisClient("localhost",6379);
 
       // initiate the actual connection
-
       redis = client.connect();
-
       //********* END 3-of-4
     }
 
@@ -96,7 +93,7 @@ public class ReporterExclamationTopology {
       // emit the word with exclamations
       _collector.emit(tuple, new Values(exclamatedWord.toString()));
 
-      //********* TO DO 4-of-4 Uncomment redis reporter
+      //********* ADDED 4-of-4 redis reporter
       long count = 30;
       redis.publish("WordCountTopology", exclamatedWord.toString() + "|" + Long.toString(count));
       //********* END 4-of-4
@@ -117,6 +114,8 @@ public class ReporterExclamationTopology {
     // create the topology
     TopologyBuilder builder = new TopologyBuilder();
 
+
+    //********* BEGIN stage2 exercise part 2-of-2 ***********
     // attach the word spout to the topology - parallelism of 10
     builder.setSpout("word", new TestWordSpout(), 10);
 
@@ -125,6 +124,8 @@ public class ReporterExclamationTopology {
 
     // attach another exclamation bolt to the topology - parallelism of 2
     builder.setBolt("exclaim2", new ExclamationBolt(), 2).shuffleGrouping("exclaim1");
+
+    //********* END stage2 exercise part 2-of-2 ***********
 
     // create the default config object
     Config conf = new Config();
