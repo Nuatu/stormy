@@ -125,10 +125,10 @@ public class ReporterExclamationTopology {
 
     // attach the exclamation bolt to the topology - parallelism of 3
     // builder.setBolt("exclaim1", new ExclamationBolt(), 3).shuffleGrouping("word");
-    builder.setBolt("exclaim1", new ExclamationBolt(), 3).shuffleGrouping("rand-sentence");
+    // builder.setBolt("exclaim1", new ExclamationBolt(), 3).shuffleGrouping("rand-sentence");
 
     // attach another exclamation bolt to the topology - parallelism of 2
-    //builder.setBolt("exclaim2", new ExclamationBolt(), 2).shuffleGrouping("exclaim1");
+    builder.setBolt("exclaim2", new ExclamationBolt(), 2).shuffleGrouping("rand-sentence");
 
     //********* END stage2 exercise part 2-of-2 ***********
 
