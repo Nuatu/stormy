@@ -160,7 +160,7 @@ public class WordCountTopology {
       //BEGIN YOUR CODE - Part 2-of-3
       //uncomment line below to declare output
 
-      //outputFieldsDeclarer.declare(new Fields("word","count"));
+      outputFieldsDeclarer.declare(new Fields("word","count"));
 
       //END YOUR CODE - Part 2-of-3
       //****************************************************
