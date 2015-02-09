@@ -222,7 +222,7 @@ public class WordCountTopology {
     //***************************************************
     // BEGIN YOUR CODE - Part 3-of-3
 
-
+    builder.setBolt("report-bolt", new ReportBolt(), 1).globalGrouping("count-bolt");
 
     // END YOUR CODE - Part 3-of-3
     //***************************************************
