@@ -131,13 +131,18 @@ public class WordCountTopology {
       //increment count.
 
       //Syntax to get the word from the 1st column of incoming tuple
-      //String word = tuple.getString(0);
+      String word = tuple.getString(0);
 
-
+      if (countMap.get(word)==null){
+        countMap.put(word,1);
+      } else {
+        Integer val = countMap.get(word);
+        countMap.put(word,++val);
+      }
 
       //After countMap is updated, emit word and count to output collector
       // Syntax to emit the word and count (uncomment to emit)
-      //collector.emit(new Values(word, countMap.get(word)));
+      collector.emit(new Values(word, countMap.get(word)));
 
       //END YOUR CODE Part 1-of-3
       //***************************************************
